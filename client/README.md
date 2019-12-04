@@ -1,6 +1,6 @@
 # VOTE-VUE
 
-1. Clonner le projet :  
+1. Clonnez le projet :  
 ```
 $ git clone https://github.com/projet-deter/vote-vue.git
 ```
