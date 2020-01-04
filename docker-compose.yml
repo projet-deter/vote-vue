@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+  client:
+    build: './client'
+    volumes:
+      - './client:/home/node/app:rw,consistent'
+    working_dir: '/home/node/app'
+    command: 'sh -c "yarn install; yarn serve"'
+    ports:
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8000:8000
