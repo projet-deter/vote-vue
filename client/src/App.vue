@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-link :to="{name: 'home'}">Home</router-link>
+    <!-- <router-link :to="{name: 'votes'}">Votes</router-link> -->
+    <!-- <router-link :to="{name: 'newVote'}">Voter</router-link> -->
+    <!-- <router-link :to="{name: 'profil', params: {id: 1}}">Profile</router-link> -->
+    <router-link :to="{name: 'login'}">Login</router-link>
+    <router-view></router-view>
+    <LoginVue/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  }
 }
 </script>
 
