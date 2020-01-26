@@ -1,25 +1,28 @@
 <template>
   <div id="app">
-    <router-link :to="{name: 'home'}">Home</router-link>
-    <!-- <router-link :to="{name: 'votes'}">Votes</router-link> -->
-    <!-- <router-link :to="{name: 'newVote'}">Voter</router-link> -->
-    <!-- <router-link :to="{name: 'profil', params: {id: 1}}">Profile</router-link> -->
-    <router-link :to="{name: 'login'}">Login</router-link>
+    <router-link :to="{name: 'home'}" v-if="$store.state.userActif.uuid">Accueil</router-link>
+    <a v-on:click.prevent="logout" v-if="$store.state.userActif.uuid">Déconnexion</a>
     <router-view></router-view>
-    <LoginVue/>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'app',
-}
+  name: "app",
+  methods: {
+    logout: function() {
+      // on détruit les infos de connexion
+      this.$store.commit("logout");
+      // redirection vers la login page
+      this.$router.push({ name: "login" });
+    }
+  }
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
