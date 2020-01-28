@@ -30,6 +30,9 @@ export default {
   created() {
     this.fetchVotes();
   },
+  updated() {
+    this.fetchVotes();
+  },
   methods: {
     fetchVotes: function() {
       http.get("votes")

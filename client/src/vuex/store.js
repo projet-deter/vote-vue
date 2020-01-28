@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    error: "",
     // données d'authentification
     isAuth: false,
     accessToken: "",
@@ -12,7 +13,7 @@ const store = new Vuex.Store({
     userActif: {},
     // liste des votes
     votes: [],
-    // données sur la modal du form
+    // données des modals
     isOpenForm: false
   },
   mutations: {
@@ -36,6 +37,7 @@ const store = new Vuex.Store({
       state.userActif = {};
     },
     getAllVotes: (state, payload) => {
+      // ajout de chaque Object vote dans la liste votes
       state.votes = payload.map(item => {
         return {
           id: item.id,
@@ -52,7 +54,8 @@ const store = new Vuex.Store({
         };
       });
     },
-    addVote: (state, payload) => {
+    postVote: (state, payload) => {
+      // ajout du nouvel Object vote dans la liste votes
       state.votes.push({
         id: payload.id,
         title: payload.title,
@@ -68,6 +71,7 @@ const store = new Vuex.Store({
       });
     },
     deleteVote: (state, payload) => {
+      // suppression d'un Object vote de la liste votes
       state.votes = state.votes.filter(x => x.id === payload["ID_vote"]);
     }
   }

@@ -43,7 +43,7 @@ export default {
       http
         .post("votes", data)
         .then(response => {
-          this.$store.commit("addVote", response.data);
+          this.$store.commit("postVote", response.data);
           this.onCancel();
         })
         .catch(error => {
