@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { HTTP } from "../../http-constants";
+import { http } from "../../axios/http-common";
 
 export default {
   name: "Login",
@@ -25,8 +25,6 @@ export default {
     // données du formulaire
     email: "",
     password: "",
-    // erreur
-    error: ""
   }),
   methods: {
     login: function() {
@@ -34,16 +32,16 @@ export default {
         email: this.email,
         password: this.password
       };
-      HTTP.post("login", data)
+      http.post("login", data)
         .then(response => {
-          this.error = "";
+          this.$store.state.error = "";
           // récupération des données du userActif
           this.$store.commit("login", response.data);
           // redirection vers la home page
           this.$router.push({ name: "home" });
         })
         .catch(error => {
-          this.error = error;
+          this.$store.state.error = error;
         });
     }
   }
