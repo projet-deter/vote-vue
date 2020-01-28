@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { HTTP } from "../../http-constants";
+import { http } from "../../axios/http-common";
 
 export default {
   name: "Login",
@@ -26,7 +26,7 @@ export default {
     email: "",
     password: "",
     // erreur
-    error: ""
+    error: null
   }),
   methods: {
     login: function() {
@@ -34,7 +34,7 @@ export default {
         email: this.email,
         password: this.password
       };
-      HTTP.post("login", data)
+      http.post("login", data)
         .then(response => {
           this.error = "";
           // récupération des données du userActif
