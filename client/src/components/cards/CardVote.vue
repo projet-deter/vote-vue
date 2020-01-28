@@ -28,7 +28,7 @@ export default {
           this.$store.commit("deleteVote");
         })
         .catch(error => {
-          this.error = error;
+          this.$store.state.error = error;
         });
     }
   }

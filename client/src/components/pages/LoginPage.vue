@@ -25,8 +25,6 @@ export default {
     // données du formulaire
     email: "",
     password: "",
-    // erreur
-    error: null
   }),
   methods: {
     login: function() {
@@ -36,14 +34,14 @@ export default {
       };
       http.post("login", data)
         .then(response => {
-          this.error = "";
+          this.$store.state.error = "";
           // récupération des données du userActif
           this.$store.commit("login", response.data);
           // redirection vers la home page
           this.$router.push({ name: "home" });
         })
         .catch(error => {
-          this.error = error;
+          this.$store.state.error = error;
         });
     }
   }

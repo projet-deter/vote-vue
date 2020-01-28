@@ -11,7 +11,9 @@ const store = new Vuex.Store({
     // données du userActif
     userActif: {},
     // liste des votes
-    votes: []
+    votes: [],
+    // données sur la modal du form
+    isOpenForm: false
   },
   mutations: {
     login: (state, payload) => {
@@ -50,8 +52,23 @@ const store = new Vuex.Store({
         };
       });
     },
+    addVote: (state, payload) => {
+      state.votes.push({
+        id: payload.id,
+        title: payload.title,
+        desc: payload.desc,
+        author: {
+          id: payload["author"]["id"],
+          uuid: payload["author"]["uuid"],
+          email: payload["author"]["email"],
+          firstname: payload["author"]["first_name"],
+          lastname: payload["author"]["last_name"],
+          birthdate: payload["author"]["birth_date"]
+        }
+      });
+    },
     deleteVote: (state, payload) => {
-      state.votes = state.votes.filter(x => x.id === payload['ID_vote']);
+      state.votes = state.votes.filter(x => x.id === payload["ID_vote"]);
     }
   }
 });

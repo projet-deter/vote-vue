@@ -9,20 +9,23 @@
         v-bind:vote="vote"
       />
     </div>
+    <modal-form />
   </div>
 </template>
 
 <script>
 import { http } from "../../axios/http-common";
-import CardVote from "../partials/CardVote.vue";
+import CardVoteVue from "../cards/CardVote.vue";
+import ModalVoteFormVue from '../modals/ModalVoteForm.vue';
 
 export default {
   name: "Home",
   components: {
-    "card-vote": CardVote
+    "modal-form": ModalVoteFormVue,
+    "card-vote": CardVoteVue
   },
   data: () => ({
-    error: null
+    voteActif: {}
   }),
   created() {
     this.fetchVotes();
@@ -31,15 +34,18 @@ export default {
     fetchVotes: function() {
       http.get("votes")
         .then(response => {
-          this.error = "";
+          this.$store.state.error = "";
           // récupération de la liste des votes
           this.$store.commit("getAllVotes", response.data);
         })
         .catch(error => {
-          this.error = error;
+          this.$store.state.error = error;
         });
     },
-    openModalForm: function() {}
+    openModalForm: function() {
+      // on ouvre la modal
+      this.$store.state.isOpenForm = true;
+    }
   }
 };
 </script>
