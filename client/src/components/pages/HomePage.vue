@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>Accueil</h1>
-    <p>Bienvenue</p>
+    <p>Bienvenue {{ $store.state.userActif.firstname }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Home"
+  name: "Home",
 };
 </script>
 
