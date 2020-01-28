@@ -9,14 +9,9 @@ const store = new Vuex.Store({
     isAuth: false,
     accessToken: "",
     // données du userActif
-    userActif: {
-      uuid: "",
-      email: "",
-      firstname: "",
-      lastname: "",
-      birthdate: ""
-    }
-    // votes: []
+    userActif: {},
+    // liste des votes
+    votes: []
   },
   mutations: {
     login: (state, payload) => {
@@ -24,6 +19,7 @@ const store = new Vuex.Store({
       state.isAuth = true;
       state.accessToken = payload["Access_token"];
       // on rempli les données du userActif
+      state.userActif.id = payload["User_actif"]["id"];
       state.userActif.uuid = payload["User_actif"]["uuid"];
       state.userActif.email = payload["User_actif"]["email"];
       state.userActif.firstname = payload["User_actif"]["first_name"];
@@ -35,18 +31,29 @@ const store = new Vuex.Store({
       state.isAuth = false;
       state.accessToken = "";
       // on vide les données du userActif
-      state.userActif.uuid = "";
-      state.userActif.email = "";
-      state.userActif.firstname = "";
-      state.userActif.lastname = "";
-      state.userActif.birthdate = "";
+      state.userActif = {};
+    },
+    getAllVotes: (state, payload) => {
+      state.votes = payload.map(item => {
+        return {
+          id: item.id,
+          title: item.title,
+          desc: item.desc,
+          author: {
+            id: item["author"]["id"],
+            uuid: item["author"]["uuid"],
+            email: item["author"]["email"],
+            firstname: item["author"]["first_name"],
+            lastname: item["author"]["last_name"],
+            birthdate: item["author"]["birth_date"]
+          }
+        };
+      });
+    },
+    deleteVote: (state, payload) => {
+      state.votes = state.votes.filter(x => x.id === payload['ID_vote']);
     }
   }
-  // getters: {
-  //   auth(state) {
-  //     return state.isAuth
-  //   }
-  // }
 });
 
 export default store;

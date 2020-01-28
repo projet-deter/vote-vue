@@ -2,11 +2,9 @@ import Vue from "vue";
 import Router from "vue-router";
 import store from "../vuex/store";
 
-// import HeaderVue from "../components/partials/HeaderVue";
+import HeaderVue from "../components/partials/Header.vue";
 import HomePageVue from "../components/pages/HomePage.vue";
 import LoginPageVue from "../components/pages/LoginPage.vue";
-// import VoteListVue from "../components/vote/VoteListVue";
-// import VoteDetailsVue from "../components/vote/VoteDetailsVue";
 
 import middlewarePipeline from "../middlewares/middlewarePipeline";
 import auth from "../middlewares/auth";
@@ -19,7 +17,10 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: HomePageVue,
+      components: {
+        header: HeaderVue,
+        default: HomePageVue
+      },
       meta: {
         middleware: [auth]
       }
@@ -29,22 +30,6 @@ const router = new Router({
       name: "login",
       component: LoginPageVue
     }
-    // {
-    //   path: "/votes",
-    //   name: "vote",
-    //   components: {
-    //     header: HeaderVue,
-    //     default: VoteListVue
-    //   },
-    //   children: [
-    //     {
-    //       path: "/:id",
-    //       components: {
-    //         header: VoteDetailsVue
-    //       }
-    //     }
-    //   ]
-    // }
   ]
 });
 
