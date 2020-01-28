@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <router-link :to="{name: 'home'}" v-if="$store.state.userActif.uuid">Accueil</router-link>
-    <a v-on:click.prevent="logout" v-if="$store.state.userActif.uuid">Déconnexion</a>
+    <router-link :to="{name: 'home'}" v-if="$store.state.isAuth">Accueil</router-link>
+    <a v-on:click.prevent="logout" v-if="$store.state.isAuth">Déconnexion</a>
     <router-view></router-view>
   </div>
 </template>
