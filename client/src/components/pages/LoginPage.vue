@@ -1,48 +1,83 @@
 <template>
   <div>
     <h1>Connexion</h1>
-    <p class="error" v-if="error">{{error}}</p>
-    <form>
-      <div class="grid-row">
+    <!-- Formik -->
+    <Formik @on-submit="handleLogin" submit-label="Connexion" :initial-values="loginForm">
+      <!-- alert-list -->
+      <div class="alert-list">
+        <div v-if="$store.state.error">Adresse e-mail ou mot de passe invalide</div>
+        <div v-if="$v.$anyDirty && $v.loginForm.email.$error">
+          <span v-if="!$v.loginForm.email.required">L'adresse e-mail est obligatoire</span>
+          <span v-else-if="!$v.loginForm.email.email">Ce champ doit être une adresse e-mail valide</span>
+        </div>
+        <div v-if="$v.$anyDirty && $v.loginForm.password.$error">
+          <span v-if="!$v.loginForm.password.required">Le mot de passe est obligatoire</span>
+        </div>
+      </div>
+      <!-- form-group | email -->
+      <div class="form-group">
         <label for="email">Adresse e-mail</label>
-        <input id="email" type="email" v-model="email" />
+        <Field
+          type="email"
+          name="email"
+          class="form-control"
+          placeholder="exemple@domaine.fr"
+          v-model.trim="$v.loginForm.email.$model"
+        />
       </div>
-      <div class="grid-row">
+      <!-- form-group | password -->
+      <div class="form-group">
         <label for="password">Mot de passe</label>
-        <input id="password" type="password" v-model="password" />
+        <Field
+          type="password"
+          name="password"
+          class="form-control"
+          placeholder="motdepasse"
+          v-model.trim="$v.loginForm.password.$model"
+        />
       </div>
-    </form>
-    <button v-on:click.prevent="login">Connexion</button>
+      <!-- button | submit -->
+      <template v-slot:submit-button>
+        <button type="submit" class="btn btn-primary">Connexion</button>
+      </template>
+    </Formik>
   </div>
 </template>
 
 <script>
-import { http } from "../../axios/http-common";
+import Formik from "../forms/Formik.vue";
+import Field from "../forms/Field.vue";
+import { required, email } from "vuelidate/lib/validators";
 
 export default {
-  name: "Login",
+  name: "LoginPage",
+  components: {
+    Formik,
+    Field
+  },
   data: () => ({
-    // données du formulaire
-    email: "",
-    password: "",
+    // données du formulaire loginForm
+    loginForm: {
+      email: "",
+      password: ""
+    }
   }),
   methods: {
-    login: function() {
+    handleLogin: function() {
       const data = {
-        email: this.email,
-        password: this.password
+        email: this.loginForm.email,
+        password: this.loginForm.password
       };
-      http.post("login", data)
-        .then(response => {
-          this.$store.state.error = "";
-          // récupération des données du userActif
-          this.$store.commit("login", response.data);
-          // redirection vers la home page
-          this.$router.push({ name: "home" });
-        })
-        .catch(error => {
-          this.$store.state.error = error;
-        });
+      this.$store.dispatch("login", data).then(() => {
+        // redirection vers la home page
+        this.$router.push({ name: "home" });
+      });
+    }
+  },
+  validations: {
+    loginForm: {
+      email: { required, email },
+      password: { required }
     }
   }
 };
@@ -59,8 +94,5 @@ export default {
   font-size: 13px;
   color: #2c3e50;
   text-align: left;
-}
-.error {
-  color: red;
 }
 </style>

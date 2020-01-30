@@ -9,12 +9,6 @@
       <div class="modal-body">
         <slot></slot>
       </div>
-      <div class="modal-footer">
-        <slot name="footer">
-          <a @click="onClose">Cancel</a>
-          <a @click="onSubmit">Submit</a>
-        </slot>
-      </div>
     </div>
   </div>
 </template>
@@ -24,9 +18,8 @@ export default {
   name: "Modal",
   props: {
     open: Boolean,
-    onClose: Function,
-    onSubmit: Function,
-    title: String
+    title: String,
+    onClose: Function
   }
 };
 </script>
@@ -85,21 +78,5 @@ export default {
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-}
-.modal-footer {
-  display: flex;
-  flex-direction: row;
-  height: 30px;
-  margin-top: 10px;
-  border-top: solid 1px #000;
-  justify-content: flex-end;
-}
-.modal-footer > a {
-  padding-top: 5px;
-  color: #42b983;
-}
-.modal-footer > a:hover {
-  color: #44715d;
-  cursor: pointer;
 }
 </style>

@@ -4,7 +4,7 @@
       <p>Bienvenue {{ $store.state.userActif.firstname }}</p>
     </div>
     <div class="right-container">
-      <router-link :to="{name: 'home'}" v-if="$store.state.isAuth">Accueil</router-link>
+      <!-- <router-link :to="{name: 'home'}" v-if="$store.state.isAuth">Accueil</router-link> -->
       <a v-on:click.prevent="logout" v-if="$store.state.isAuth">Déconnexion</a>
     </div>
   </div>
@@ -16,7 +16,7 @@ export default {
   methods: {
     logout: function() {
       // on détruit les infos de connexion
-      this.$store.commit("logout");
+      this.$store.dispatch("logout");
       // redirection vers la login page
       this.$router.push({ name: "login" });
     }

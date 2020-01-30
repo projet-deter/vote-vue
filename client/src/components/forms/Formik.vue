@@ -1,0 +1,61 @@
+<template>
+  <form @submit.prevent="handleSubmit" :method="method">
+    <slot></slot>
+    <slot name="submit-button">
+      <button type="submit">{{submitLabel}}</button>
+    </slot>
+  </form>
+</template>
+
+<script>
+export default {
+  name: "Formik",
+  props: {
+    initialValues: Object,
+    submitLabel: {
+      default: "Submit",
+      type: String
+    },
+    method: {
+      default: "POST",
+      type: String
+    }
+  },
+  data: () => ({
+    formValues: {}
+  }),
+  mounted() {
+    this.formValues = this.initialValues;
+  },
+  provide: function() {
+    return {
+      initialValues: this.initialValues,
+      updateFields: this.updateFields
+    };
+  },
+  methods: {
+    handleSubmit: function() {
+      this.$emit("on-submit", Object.assign({}, this.formValues));
+    },
+    updateFields: function(type, name, value) {
+      if (type == "checkbox") {
+        if (this.formValues.hasOwnProperty(name)) {
+          if (this.formValues[name].includes(value)) {
+            this.formValues[name] = this.formValues[name].filter(
+              formValue => value != formValue
+            );
+          } else {
+            this.formValues[name] = [value, ...this.formValues[name]];
+          }
+        } else {
+          this.formValues[name] = [value];
+        }
+      } else {
+        this.formValues[name] = value;
+      }
+    }
+  }
+};
+</script>
+
+<style></style>
