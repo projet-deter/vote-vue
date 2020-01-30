@@ -1,23 +1,23 @@
 <template>
-  <div>
-    <button v-on:click.prevent="openModalForm">Ajouter</button>
+  <div class="home-body">
+    <button type="button" class="btn btn-primary btn-md" v-on:click.prevent="openModalForm">Ajouter</button>
     <p v-if="!$store.state.votes.length">Pas de vote</p>
-    <div class="votes-container" v-if="$store.state.votes.length">
-      <card-vote v-for="vote in $store.state.votes" v-bind:key="vote.id" v-bind:vote="vote" />
+    <div class="votes-list" v-if="$store.state.votes.length">
+      <CardVote v-for="vote in $store.state.votes" v-bind:key="vote.id" v-bind:vote="vote" />
     </div>
-    <modal-form />
+    <ModalForm />
   </div>
 </template>
 
 <script>
-import CardVoteVue from "../cards/CardVote.vue";
-import ModalVoteFormVue from "../modals/ModalVoteForm.vue";
+import CardVote from "../cards/CardVote.vue";
+import ModalForm from "../modals/ModalForm.vue";
 
 export default {
   name: "HomePage",
   components: {
-    "modal-form": ModalVoteFormVue,
-    "card-vote": CardVoteVue
+    ModalForm,
+    CardVote
   },
   data: () => ({
     voteActif: {}
@@ -42,4 +42,16 @@ export default {
 </script>
 
 <style>
+.home-body {
+  display: grid;
+  margin: 0 20px;
+}
+button {
+  margin: 10px 0;
+  width: fit-content;
+  justify-self: right;
+}
+.votes-list {
+  padding: 0 20px;
+}
 </style>

@@ -1,13 +1,21 @@
 <template>
-  <div class="menu">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="left-container">
-      <p>Bienvenue {{ $store.state.userActif.firstname }}</p>
+      <p class="navbar-brand">Bienvenue {{ $store.state.userActif.firstname }}</p>
     </div>
     <div class="right-container">
       <!-- <router-link :to="{name: 'home'}" v-if="$store.state.isAuth">Accueil</router-link> -->
-      <a v-on:click.prevent="logout" v-if="$store.state.isAuth">Déconnexion</a>
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-sm"
+        v-on:click.prevent="logout"
+        v-if="$store.state.isAuth"
+      >
+        <!-- <span class="glyphicon glyphicon-log-out"></span> -->
+        Deconnexion
+      </button>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -25,17 +33,18 @@ export default {
 </script>
 
 <style scoped>
-.menu {
+.navbar {
   display: inline-flex;
   width: 100%;
-  background-color: lightgrey;
 }
-.left-container {
-  width: 50%;
-  font-weight: bold;
-  font-size: 13px;
-}
+.left-container,
 .right-container {
   width: 50%;
+}
+.left-container > .navbar-brand {
+  margin: 0;
+}
+.right-container {
+  text-align: end;
 }
 </style>

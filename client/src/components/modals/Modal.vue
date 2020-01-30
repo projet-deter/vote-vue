@@ -47,31 +47,24 @@ export default {
 .modal-container {
   z-index: 1;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  min-height: 25%;
-  max-height: 75%;
-  min-width: 40%;
-  max-width: 80%;
   background-color: #fff;
-  border: solid 1px transparent;
   border-radius: 0.125rem;
 }
 .modal-header {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 30px;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #000;
+  padding: 5px 0;
 }
 .modal-header > span {
   font-weight: bold;
-  font-size: 25px;
-  color: #2c3e50;
+  font-size: 22px;
 }
 .modal-header > a {
   cursor: pointer;
+  padding: 1px 5px;
+  font-size: 12px;
+  border: solid 1px;
+  border-radius: 20%;
+  color: #495057;
 }
 .modal-body {
   flex: 1;

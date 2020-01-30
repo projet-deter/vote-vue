@@ -2,7 +2,7 @@
   <div>
     <h1>Connexion</h1>
     <!-- Formik -->
-    <Formik @on-submit="handleLogin" submit-label="Connexion" :initial-values="loginForm">
+    <Formik class="form" @on-submit="handleLogin" submit-label="Connexion" :initial-values="loginForm">
       <!-- alert-list -->
       <div class="alert-list">
         <div v-if="$store.state.error">Adresse e-mail ou mot de passe invalide</div>
@@ -84,15 +84,15 @@ export default {
 </script>
 
 <style scoped>
-.grid-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+h1 {
+  margin: 20px 0;
+  text-align: center;
 }
-.grid-row > label {
-  font-weight: bold;
-  font-size: 13px;
-  color: #2c3e50;
-  text-align: left;
+.form {
+  margin: auto;
+  width: 400px;
+}
+button {
+  float: right;
 }
 </style>
