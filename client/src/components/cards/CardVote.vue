@@ -5,7 +5,7 @@
     <div class="card-footer">
       <p>{{vote.author.firstname}} {{vote.author.lastname}}</p>
       <a
-        v-on:click.prevent="deleteVote(vote.id)"
+        v-on:click.prevent="handleDeleteVote(vote.id)"
         v-if="vote.author.id === $store.state.userActif.id"
       >Delete</a>
     </div>
@@ -13,23 +13,15 @@
 </template>
 
 <script>
-import { http } from "../../axios/http-common";
-
 export default {
   name: "CardVote",
   props: {
     vote: Object
   },
   methods: {
-    deleteVote: function(idVote) {
-      http.delete("votes/" + idVote)
-        .then(() => {
-          // on retire le vote du store (liste votes)
-          this.$store.commit("deleteVote");
-        })
-        .catch(error => {
-          this.$store.state.error = error;
-        });
+    handleDeleteVote: function(idVote) {
+      // suppression d'un vote (qui appartient au userActif)
+      this.$store.dispatch("deleteVote", idVote);
     }
   }
 };

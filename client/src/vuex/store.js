@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { http } from "../axios/http-common";
 
 Vue.use(Vuex);
 
@@ -16,61 +17,122 @@ const store = new Vuex.Store({
     // données des modals
     isOpenForm: false
   },
+  actions: {
+    login: (context, data) => {
+      return new Promise((resolve, reject) => {
+        http
+          .post("login", data)
+          .then(response => {
+            context.state.error = "";
+            // récupération des données du token et du userActif
+            context.commit("setAuthData", response.data["Access_token"]);
+            context.commit("setUserActifData", response.data["User_actif"]);
+            resolve();
+          })
+          .catch(error => {
+            context.state.error = error;
+            reject();
+          });
+      });
+    },
+    logout: context => {
+      context.commit("setAuthData", null);
+      context.commit("setUserActifData", null);
+    },
+    getVotes: context => {
+      http
+        .get("votes")
+        .then(response => {
+          context.state.error = "";
+          // création de la liste des votes
+          context.commit("createVotes", response.data);
+        })
+        .catch(error => {
+          context.state.error = error;
+        });
+    },
+    postVote: (context, data) => {
+      return new Promise((resolve, reject) => {
+        http
+          .post("votes", data)
+          .then(response => {
+            // ajout du nouveau vote dans la liste votes
+            context.commit("addVote", response.data);
+            resolve();
+          })
+          .catch(error => {
+            context.state.error = error;
+            reject();
+          });
+      });
+    },
+    deleteVote: (context, idVote) => {
+      http
+        .delete("votes/" + idVote)
+        .then(() => {
+          // on retire le vote de la liste votes
+          context.commit("removeVote", idVote);
+        })
+        .catch(error => {
+          context.state.error = error;
+        });
+    }
+  },
   mutations: {
-    login: (state, payload) => {
+    setAuthData: (state, payload) => {
       // on rempli les données d'authentification
-      state.isAuth = true;
-      state.accessToken = payload["Access_token"];
+      state.isAuth = payload ? true : false;
+      state.accessToken = payload;
+    },
+    setUserActifData: (state, payload) => {
       // on rempli les données du userActif
-      state.userActif.id = payload["User_actif"]["id"];
-      state.userActif.uuid = payload["User_actif"]["uuid"];
-      state.userActif.email = payload["User_actif"]["email"];
-      state.userActif.firstname = payload["User_actif"]["first_name"];
-      state.userActif.lastname = payload["User_actif"]["last_name"];
-      state.userActif.birthdate = payload["User_actif"]["birth_date"];
+      state.userActif = payload ? 
+      {
+        id: payload["id"],
+        uuid: payload["uuid"],
+        email: payload["email"],
+        firstname: payload["first_name"],
+        lastname: payload["last_name"],
+        birthdate: payload["birth_date"]
+      } : {};
     },
-    logout: state => {
-      // on détruit les données d'authentification
-      state.isAuth = false;
-      state.accessToken = "";
-      // on vide les données du userActif
-      state.userActif = {};
-    },
-    getAllVotes: (state, payload) => {
+    createVotes: (state, payload) => {
       // ajout de chaque Object vote dans la liste votes
       state.votes = payload.map(item => {
+        const author = item["author"];
         return {
           id: item.id,
           title: item.title,
           desc: item.desc,
           author: {
-            id: item["author"]["id"],
-            uuid: item["author"]["uuid"],
-            email: item["author"]["email"],
-            firstname: item["author"]["first_name"],
-            lastname: item["author"]["last_name"],
-            birthdate: item["author"]["birth_date"]
+            id: author["id"],
+            uuid: author["uuid"],
+            email: author["email"],
+            firstname: author["first_name"],
+            lastname: author["last_name"],
+            birthdate: author["birth_date"]
           }
         };
       });
     },
-    postVote: (state, payload) => {
+    addVote: (state, payload) => {
+      const author = payload["author"];
       // ajout du nouvel Object vote dans la liste votes
       state.votes.push({
         id: payload.id,
         title: payload.title,
         desc: payload.desc,
         author: {
-          id: payload["author"]["id"],
-          uuid: payload["author"]["uuid"],
-          email: payload["author"]["email"],
-          firstname: payload["author"]["first_name"],
-          lastname: payload["author"]["last_name"],
-          birthdate: payload["author"]["birth_date"]
+          id: author["id"],
+          uuid: author["uuid"],
+          email: author["email"],
+          firstname: author["first_name"],
+          lastname: author["last_name"],
+          birthdate: author["birth_date"]
         }
       });
     },
-    deleteVote: (state, payload) => {
+    removeVote: (state, payload) => {
       // suppression d'un Object vote de la liste votes
       state.votes = state.votes.filter(x => x.id === payload["ID_vote"]);
     }
