@@ -1,13 +1,24 @@
 <template>
   <div class="card">
-    <div class="card-name">{{vote.title}}</div>
-    <div class="card-content">{{vote.desc}}</div>
+    <div class="card-body">
+      <span class="card-title">{{vote.title}}</span>
+      <span>{{vote.desc}}</span>
+    </div>
     <div class="card-footer">
-      <p>{{vote.author.firstname}} {{vote.author.lastname}}</p>
-      <a
-        v-on:click.prevent="handleDeleteVote(vote.id)"
-        v-if="vote.author.id === $store.state.userActif.id"
-      >Delete</a>
+      <div class="left-container">
+        <p>{{vote.author.firstname}} {{vote.author.lastname}}</p>
+      </div>
+      <div class="right-container">
+        <button
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          v-on:click.prevent="handleDeleteVote(vote.id)"
+          v-if="vote.author.id === $store.state.userActif.id"
+        >
+          <!-- <span class="glyphicon glyphicon-trash"></span> -->
+          Supprimer
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,21 +40,29 @@ export default {
 
 <style>
 .card {
-  margin: 0 auto;
-  padding: 5px 3px;
+  margin: 0 auto 10px;
   width: 80%;
-  border: solid 1px #2c3e50;
 }
-.card:first-child {
-  margin-top: 10px;
+.card-body {
+  display: grid;
 }
-.card-name {
-  width: 100%;
-  font-size: 16px;
-  text-align: left;
-  color: #2c3e50;
+.card-body > .card-title {
+  font-weight: bold;
 }
-p {
+.card-footer {
+  display: inline-flex;
+}
+.card-footer > .left-container,
+.card-footer > .right-container {
+  width: 50%;
+}
+.card-footer > .left-container > p {
+  margin: 0;
+}
+.card-footer > .right-container {
+  text-align: end;
+}
+.card-footer > .right-container > button {
   margin: 0;
 }
 </style>

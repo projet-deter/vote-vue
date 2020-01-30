@@ -35,8 +35,10 @@
       </div>
       <!-- button | submit -->
       <template v-slot:submit-button>
-        <button class="btn btn-primary" v-on:click.prevent="onCancel">Annuler</button>
+        <div class="modal-footer">
+        <button class="btn btn-outline-primary" v-on:click.prevent="onCancel">Annuler</button>
         <button type="submit" class="btn btn-primary">Créer</button>
+        </div>
       </template>
     </Formik>
   </Modal>
@@ -49,7 +51,7 @@ import Field from "../forms/Field.vue";
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  name: "ModalVoteForm",
+  name: "ModalForm",
   components: {
     Modal,
     Formik,
@@ -88,4 +90,7 @@ export default {
 </script>
 
 <style>
+.modal-footer {
+  padding: 8px 0 0;
+}
 </style>
